@@ -502,6 +502,11 @@ function init(Game) {
         players.push(player);
         roles[roleData.slug] = player;
         logger.debug(roleData.slug + " = " + player);
+
+        // If no player is assigned and the role is not optional
+        if (!player && (!roleData.hasOwnProperty('optional') || !roleData.optional)) {
+          throw "Required role '" + roleData.slug + "' has no player assigned.";
+        }
       });
 
       var game_spec = createGame(roles);
@@ -523,6 +528,11 @@ function init(Game) {
         var player = req.param('role' + players.length + 1) || req.param(roleData.slug);
         players.push(player);
         roles[roleData.slug] = player;
+
+        // If no player is assigned and the role is not optional
+        if (!player && (!roleData.hasOwnProperty('optional') || !roleData.optional)) {
+          throw "Required role '" + roleData.slug + "' has no player assigned.";
+        }
       });
 
       var game_spec = createGame(roles);
